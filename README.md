@@ -7,6 +7,13 @@
 
 ```bash
 $ npm install
+
+#To get started by scaffolding with nestCLI 
+$	npm i -g @nestjs/cli
+
+#To create project 
+$	nest new project_name
+
 ```
 
 ## Running the app
@@ -22,6 +29,20 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Basic Commands
+
+```bash
+# create constroller
+$	nest g controller controller_name
+
+# create services
+$	nest g service service_name
+
+# create resource
+$ -	nest g resource resource_name
+```
+
+
 ## Test
 
 ```bash
@@ -35,3 +56,10 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## DB
+
+```
+
+change db connection in >> app.module.ts
+
+```
