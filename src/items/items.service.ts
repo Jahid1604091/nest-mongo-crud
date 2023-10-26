@@ -1,28 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { Item } from './interfaces/item.interface';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+
+import { PrismaService } from 'src/prisma.service';
+import { Prisma } from '@prisma/client';
 @Injectable()
 export class ItemsService {
-  constructor(@InjectModel('Item') private readonly itemModel: Model<Item>) {}
+  constructor(private prisma: PrismaService) {}
 
   async findAll(): Promise<Item[]> {
-    return await this.itemModel.find({});
+    return this.prisma.item.findMany();
   }
-  async findOne(id: string): Promise<Item> {
-    return await this.itemModel.findOne({ _id: id });
-  }
-
-  async createOne(item: Item): Promise<Item> {
-    const newItem = new this.itemModel(item);
-    return await newItem.save();
+  async findOne(id: number): Promise<Item> {
+    return await this.prisma.item.findUnique({ where: { id } });
   }
 
-  async updateOne(id:string,item: Item): Promise<Item> {
-    return await this.itemModel.findByIdAndUpdate(id, item, { new: true });
+  async createOne(data: Prisma.ItemCreateInput): Promise<Item> {
+    return this.prisma.item.create({
+      data,
+    });
   }
 
-  async deleteOne(id: string): Promise<Item> {
-    return await this.itemModel.findByIdAndRemove({ _id: id });
+  async updateOne(id: number, data: Item): Promise<Item> {
+    return await this.prisma.item.update({ where: { id }, data });
+  }
+
+  async deleteOne(id: number): Promise<Item> {
+    return await this.prisma.item.delete({ where: { id } });
   }
 }
